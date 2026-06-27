@@ -4,7 +4,7 @@ CFLAGS = -Wall -Wextra
 vpath %.h ./include
 vpath %.c ./src
 
-objects = main.o cgol.o
+objects = main.o cgol.o render.o
 
 cgol : $(objects)
 	$(CC) $^ -o $@
@@ -13,6 +13,9 @@ main.o : main.c cgol.h
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
 cgol.o : cgol.c cgol.h
+	$(CC) $(CFLAGS) -c $< -o $@
+	
+render.o : render.c render.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY : clean

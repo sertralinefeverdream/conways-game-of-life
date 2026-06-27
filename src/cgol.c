@@ -46,9 +46,10 @@ static int count_live_neighbours(const struct cgol_state s, int col, int row) {
 
    for (int i = 0; i < 3; ++i) {    
        for (int j = 0; j < 3; ++j) {
-           if (i == j) {
-               continue;
-           }
+            if (i == 1 && i == j) {
+                continue;
+            }
+
            int cell = cgol_state_index(s, col+i-1, row+j-1);    
            n += cell;
        }
