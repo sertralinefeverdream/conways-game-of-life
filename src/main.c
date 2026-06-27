@@ -6,7 +6,7 @@
 int main(int argc, char **argv) {
     render_init();
     
-    struct renderer r = renderer_create('X', 1);
+    struct renderer r = renderer_create('O', 5);
     
     struct cgol_state s = cgol_state_create(80, 80);
     cgol_state_set(s, 5, 5, 1);
