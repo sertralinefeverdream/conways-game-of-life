@@ -6,14 +6,20 @@
 int main(int argc, char **argv) {
     render_init();
     
-    struct renderer r = renderer_create('O', 5);
+    struct renderer r = renderer_create('O', 1);
     
     struct cgol_state s = cgol_state_create(80, 80);
     cgol_state_set(s, 5, 5, 1);
     cgol_state_set(s, 6, 6, 1);
     cgol_state_set(s, 6, 7, 1);
     cgol_state_set(s, 5, 7, 1);
-    cgol_state_set(s, 4, 7, 1);
+    cgol_state_set(s, 4, 7, 1); 
+    
+    cgol_state_set(s, 10, 5, 1);
+    cgol_state_set(s, 11, 6, 1);
+    cgol_state_set(s, 11, 7, 1);
+    cgol_state_set(s, 10, 7, 1);
+    cgol_state_set(s, 9, 7, 1);
     
     for (;;) {
        wait_and_render(&r, s);

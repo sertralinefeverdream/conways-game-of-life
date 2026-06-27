@@ -5,32 +5,31 @@
 #include <stdio.h>
 #include <time.h>
 
-#define HIDE_CURSOR fputs("\033[2J", stdout) 
-#define CURSOR_TO_HOME fputs("\033[H", stdout) 
-#define CURSOR_NEXT_LINE fputs("\033[1E", stdout)
-#define FLUSH fflush(stdout)
-#define ERASE_SCREEN fputs("\033[2J", stdout)
-#define ALT_BUFFER_ENTER fputs("\033[?1049h", stdout)
-#define ALT_BUFFER_EXIT fputs("\033[?1049l", stdout)
+#define HIDE_CURSOR "\033[2J" 
+#define CURSOR_TO_HOME "\033[H"
+#define CURSOR_NEXT_LINE "\033[1E"
+#define ERASE_SCREEN "\033[2J"
+#define ALT_BUFFER_ENTER "\033[?1049h"
+#define ALT_BUFFER_EXIT "\033[?1049l"
 
 void render_cgol(const struct renderer r, const struct cgol_state s) {
-    CURSOR_TO_HOME;
+    fputs(CURSOR_TO_HOME, stdout);
     for (int i = 0; i < s.height; ++i) {
         for (int j = 0; j < s.width; ++j) {
             char c = cgol_state_index(s, j, i) ? r.cell_char : ' ';
             fputc(c, stdout);
         }
-        CURSOR_NEXT_LINE;
+        fputs(CURSOR_NEXT_LINE, stdout);
     }
-    FLUSH;
+    fflush(stdout);
 }
 
 void render_init(void) {
-    ALT_BUFFER_ENTER;
-    HIDE_CURSOR;// Hide cursor
-    ERASE_SCREEN;
-    CURSOR_TO_HOME;
-    FLUSH;
+    fputs(ALT_BUFFER_ENTER, stdout);
+    fputs(HIDE_CURSOR, stdout);// Hide cursor
+    fputs(ERASE_SCREEN, stdout);
+    fputs(CURSOR_TO_HOME, stdout);
+    fflush(stdout);
 }
 
 struct renderer renderer_create(char cell_char, unsigned framerate) {
@@ -42,14 +41,6 @@ struct renderer renderer_create(char cell_char, unsigned framerate) {
 }
 
 void wait_and_render(struct renderer *r, const struct cgol_state s) {
-    /*for (;;) {
-       clock_t now = clock() / CLOCKS_PER_SEC * 1000; // Time elapsed in miliseconds
-       if (now - r->last_update >= 1000.0/r->framerate) {
-           r->last_update = now; 
-           break;
-       } 
-    } */
-   
     for (;;) {
         struct timespec now = {0};
         clock_gettime(CLOCK_MONOTONIC, &now);
@@ -61,9 +52,6 @@ void wait_and_render(struct renderer *r, const struct cgol_state s) {
             break;
         }
     }
-
-
-    
     
     render_cgol(*r, s);
 }
