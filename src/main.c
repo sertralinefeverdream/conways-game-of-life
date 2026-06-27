@@ -6,9 +6,7 @@
 int main(int argc, char **argv) {
     render_init();
     
-    struct renderer r = {
-        .cell_char = 'O',
-    };
+    struct renderer r = renderer_create('X', 1);
     
     struct cgol_state s = cgol_state_create(80, 80);
     cgol_state_set(s, 5, 5, 1);
@@ -18,7 +16,7 @@ int main(int argc, char **argv) {
     cgol_state_set(s, 4, 7, 1);
     
     for (;;) {
-       render_cgol(r, s); 
+       wait_and_render(&r, s);
        struct cgol_state next_s = cgol_state_generate_next(s);
        cgol_state_free(s);
        s = next_s;
