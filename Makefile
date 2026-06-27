@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Wextra 
+CFLAGS = -std=c23 -Wall -Wextra 
 
 vpath %.h ./include
 vpath %.c ./src

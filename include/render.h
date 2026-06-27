@@ -8,7 +8,7 @@
 struct renderer {
     char cell_char;
     unsigned framerate;
-    clock_t last_update;    
+    struct timespec last_update;
 };
 
 void render_cgol(struct renderer r, struct cgol_state s);
