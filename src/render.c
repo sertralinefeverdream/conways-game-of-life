@@ -5,6 +5,7 @@
 
 #include <stdio.h>
 #include <time.h>
+#include <stdlib.h>
 
 #define HIDE_CURSOR "\033[?25l"
 #define SHOW_CURSOR "\033[?25h"

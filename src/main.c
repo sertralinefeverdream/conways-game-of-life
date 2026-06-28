@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <signal.h>
+#include <stdlib.h>
 
 static volatile sig_atomic_t running = 1;
 
