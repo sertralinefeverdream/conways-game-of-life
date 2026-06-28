@@ -25,18 +25,15 @@ struct cgol_state cgol_state_create_randomised(int width, int height, double p) 
        return s;  // If the probability is invalid, return a cgol_state with empty grid.
     }
     
-    srand(time(NULL)); // Seeding the probability.
-    for (int i = 0; i < s.width; ++i) {
-        for (int j = 0; j < s.height; ++j) {
-            int r = rand();
-            
-            if (r <= (double)RAND_MAX * p) { // Not sure if the cast to double is necessary bcus maybe it will be promoted implicitly.
-               cgol_state_set(s, i, j, 1);
-               continue; 
-            }
-            
-            cgol_state_set(s, i, j, 0);
+    for (int i = 0; i < s.width * s.height; ++i) {
+        int r = rand();
+        
+        if (r <= (double)RAND_MAX * p) {
+           s.grid[i] = 1;
+           continue; 
         }
+        
+        s.grid[i] = 0;
     }
     
     return s;
