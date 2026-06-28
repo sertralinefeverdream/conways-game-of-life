@@ -1,23 +1,30 @@
 CC = gcc
 CFLAGS = -std=c23 -Wall -Wextra 
+BUILDDIR = ./build
+EXEC_NAME = conways-game-of-life
 
 vpath %.h ./include
 vpath %.c ./src
 
-objects = main.o cgol.o render.o
+OBJECTS = main.o cgol.o render.o
 
-cgol : $(objects)
+$(BUILDDIR)/$(EXEC_NAME) : $(patsubst %.o,$(BUILDDIR)/%.o, $(OBJECTS))
+	mkdir -p $(BUILDDIR)
 	$(CC) $^ -o $@
+# rm $(patsubst %.o,$(BUILDDIR)/%.o,$(OBJECTS)) Optionally remove object files
 
-main.o : main.c cgol.h
+$(BUILDDIR)/main.o : main.c cgol.h
+	mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@ 
 
-cgol.o : cgol.c cgol.h
+$(BUILDDIR)/cgol.o : cgol.c cgol.h
+	mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 	
-render.o : render.c render.h
+$(BUILDDIR)/render.o : render.c render.h cgol.h
+	mkdir -p $(BUILDDIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY : clean
 clean :  
-	rm cgol $(objects)  
+	rm -rf $(BUILDDIR) 

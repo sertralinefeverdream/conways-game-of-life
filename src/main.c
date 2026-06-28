@@ -19,6 +19,7 @@ int main(int argc, char **argv) {
     struct renderer r = renderer_create('O', 12);
     struct cgol_state s = cgol_state_create(80, 80);
 
+    // Some basic prefixes
     cgol_state_set(s, 5, 5, 1);
     cgol_state_set(s, 6, 6, 1);
     cgol_state_set(s, 6, 7, 1);
@@ -39,8 +40,6 @@ int main(int argc, char **argv) {
     cgol_state_set(s, 1, 5, 1);
     cgol_state_set(s, 2, 6, 1);
     cgol_state_set(s, 3, 7, 1);
-    cgol_state_set(s, 4, 7, 1);
-    cgol_state_set(s, 5, 7, 1); 
     
     
     while (running) {
