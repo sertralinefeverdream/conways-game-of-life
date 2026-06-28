@@ -2,7 +2,6 @@
 A basic implementation of Conway's Game Of Life written in C.
 A small pet project that I am working on to get more comfortable with writing in C and using tools like GNU Make.
 The code may not be particularly good but it has been a fun learning experience so far with more features to come provided that I'm still motivated.
-Currently, the grid is preset with a small glider and is hard-coded. This can be modified in the source code until I add later features.
 
 ### Prerequisites:
 - This project has not been tested on all platforms. Presumes a UNIX-like environment.
