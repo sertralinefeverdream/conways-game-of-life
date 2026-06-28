@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     struct renderer r = renderer_create('O', 12); // Set to 12 generations per second. Feel free to modify.
     struct cgol_state s = cgol_state_create(80, 80);
     
-    /* Instructions for modification of grid:
+    /* Instructions for user modification of hard-coded grid:
      *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
      *  at row 21, column 30. 1 as the last parameter will make the cell at
      *  this position live while 0 will make the cell dead. 
