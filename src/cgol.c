@@ -25,7 +25,7 @@ struct cgol_state cgol_state_create_randomised(int width, int height, double p) 
        return s;  // If the probability is invalid, return a cgol_state with empty grid.
     }
     
-    srand(time(NULL));
+    srand(time(NULL)); // Seeding the probability.
     for (int i = 0; i < s.width; ++i) {
         for (int j = 0; j < s.height; ++j) {
             int r = rand();

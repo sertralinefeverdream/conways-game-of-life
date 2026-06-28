@@ -12,9 +12,9 @@ struct renderer {
     struct timespec last_update;
 };
 
-void render_cgol(struct renderer *r, struct cgol_state s);
+void render_cgol(struct renderer *const r, const struct cgol_state s);
 void render_init(void);
 struct renderer renderer_create(char cell_char, unsigned framerate);
-void wait_and_render(struct renderer *r, struct cgol_state s);
+void wait_and_render(struct renderer *const r, const struct cgol_state s);
 
 #endif

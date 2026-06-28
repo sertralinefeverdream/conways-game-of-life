@@ -15,7 +15,7 @@
 #define ALT_BUFFER_ENTER "\033[?1049h"
 #define ALT_BUFFER_EXIT "\033[?1049l"
 
-void render_cgol(struct renderer *r, const struct cgol_state s) {
+void render_cgol(struct renderer *const r, const struct cgol_state s) {
     fputs(CURSOR_TO_HOME, stdout);
     for (int i = 0; i < s.height; ++i) {
         for (int j = 0; j < s.width; ++j) {
@@ -26,9 +26,7 @@ void render_cgol(struct renderer *r, const struct cgol_state s) {
         fflush(stdout);
     }
     
-    struct timespec now = {0};
-    clock_gettime(CLOCK_MONOTONIC, &now);
-    r->last_update = now;
+    clock_gettime(CLOCK_MONOTONIC, &(r->last_update));
 }
 
 static void render_atexit(void) { 
@@ -54,25 +52,8 @@ struct renderer renderer_create(char cell_char, unsigned framerate) {
        .last_update = {0},
    };
 }
-/*
-void wait_and_render(struct renderer *r, const struct cgol_state s) {
-    for (;;) {
-        struct timespec now = {0};
-        clock_gettime(CLOCK_MONOTONIC, &now);
 
-        double now_seconds = now.tv_sec + now.tv_nsec / 1e9;
-        double last_update_seconds = r->last_update.tv_sec + r->last_update.tv_nsec / 1e9;
-        if (now_seconds - last_update_seconds >= 1.0/(double)r->framerate) {
-            r->last_update = now;
-            break;
-        }
-    }
-    
-    render_cgol(*r, s);
-}
-*/
-
-void wait_and_render(struct renderer *r, const struct cgol_state s) {
+void wait_and_render(struct renderer *const r, const struct cgol_state s) {
     for (;;) {
         struct timespec now = {0};
         clock_gettime(CLOCK_MONOTONIC, &now);
