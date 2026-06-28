@@ -4,7 +4,10 @@
 #include <stdlib.h>
 #include <time.h>
 
-struct cgol_state cgol_state_create(int width, int height) {
+#define INIT 1 
+#define NOT_INIT 0
+
+struct cgol_state cgol_state_create(int width, int height, int initialised) {
     if (width <= 0 || height <= 0) {
        perror("cgol_state grid must have non-zero, non-negative dimensions");
        exit(EXIT_FAILURE);
@@ -13,13 +16,18 @@ struct cgol_state cgol_state_create(int width, int height) {
     struct cgol_state s;
     s.width = width;
     s.height = height;
-    // s.grid = malloc(sizeof(int) * width * height); UNSAFE?
-    s.grid = calloc(width * height, sizeof(int)); // Initialised to 0
+    s.grid = malloc(sizeof(int) * width * height); // Initialised to 0
+                                                   
+    if (initialised) {
+       for (int i = 0; i < s.width * s.height; ++i)  {
+           s.grid[i] = 0;
+       }
+    }
     return s;
 }
 
 struct cgol_state cgol_state_create_randomised(int width, int height, double p) {
-    struct cgol_state s = cgol_state_create(width, height);
+    struct cgol_state s = cgol_state_create(width, height, INIT); 
     
     if (p < 0 || p > 1) {
        return s;  // If the probability is invalid, return a cgol_state with empty grid.
@@ -81,7 +89,7 @@ static int count_live_neighbours(const struct cgol_state s, int col, int row) {
 }
 
 struct cgol_state cgol_state_generate_next(const struct cgol_state s) {
-    struct cgol_state next = cgol_state_create(s.width, s.height);
+    struct cgol_state next = cgol_state_create(s.width, s.height, NOT_INIT);
 
     for (int i = 0; i < s.width; ++i) {
         for (int j = 0; j < s.height; ++j) {

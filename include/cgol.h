@@ -7,7 +7,7 @@ struct cgol_state {
     int *grid;
 };
 
-struct cgol_state cgol_state_create(int width, int height);
+struct cgol_state cgol_state_create(int width, int height, int initialised);
 struct cgol_state cgol_state_create_randomised(int width, int height, double p);
 void cgol_state_free(struct cgol_state s);   
 int cgol_state_index(const struct cgol_state s, int col, int row); 
