@@ -5,7 +5,8 @@
 #include <stdio.h>
 #include <time.h>
 
-#define HIDE_CURSOR "\033[2J" 
+#define HIDE_CURSOR "\033[?25l"
+#define SHOW_CURSOR "\033[?25h"
 #define CURSOR_TO_HOME "\033[H"
 #define CURSOR_NEXT_LINE "\033[1E"
 #define ERASE_SCREEN "\033[2J"
@@ -20,11 +21,19 @@ void render_cgol(const struct renderer r, const struct cgol_state s) {
             fputc(c, stdout);
         }
         fputs(CURSOR_NEXT_LINE, stdout);
+        fflush(stdout);
     }
+}
+
+static void render_atexit(void) { 
+    fputs(ALT_BUFFER_EXIT, stdout);
+    fputs(SHOW_CURSOR, stdout); 
+    printf("Exited from Conway's Game Of Life!\n");
     fflush(stdout);
 }
 
 void render_init(void) {
+    atexit(render_atexit);
     fputs(ALT_BUFFER_ENTER, stdout);
     fputs(HIDE_CURSOR, stdout);// Hide cursor
     fputs(ERASE_SCREEN, stdout);

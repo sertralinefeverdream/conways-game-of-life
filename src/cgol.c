@@ -23,7 +23,6 @@ int cgol_state_index(const struct cgol_state s, int col, int row) {
    if (col < 0 || col >= s.width || row < 0 || row >= s.height) {
        return 0;
    }
-   
    return s.grid[row * s.width + col];
 }
 
@@ -31,7 +30,6 @@ void cgol_state_set(struct cgol_state s, int col, int row, int value) {
     if (col < 0 || col >= s.width || row < 0 || row >= s.height) {
         return;
     }
-    
     s.grid[row * s.width + col] = value;
 }
 
@@ -46,10 +44,9 @@ static int count_live_neighbours(const struct cgol_state s, int col, int row) {
 
    for (int i = 0; i < 3; ++i) {    
        for (int j = 0; j < 3; ++j) {
-            if (i == 1 && i == j) {
+            if (i == 1 && j == 1) {
                 continue;
             }
-
            int cell = cgol_state_index(s, col+i-1, row+j-1);    
            n += cell;
        }
