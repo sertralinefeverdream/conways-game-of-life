@@ -1,6 +1,9 @@
 #ifndef CGOL_H
 #define CGOL_H
 
+#define INIT 1 
+#define NOT_INIT 0
+
 struct cgol_state {
     int width;  
     int height;

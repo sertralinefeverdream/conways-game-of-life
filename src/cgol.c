@@ -4,9 +4,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define INIT 1 
-#define NOT_INIT 0
-
 struct cgol_state cgol_state_create(int width, int height, int initialised) {
     if (width <= 0 || height <= 0) {
        perror("cgol_state grid must have non-zero, non-negative dimensions");
