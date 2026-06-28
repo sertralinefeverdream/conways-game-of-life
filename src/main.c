@@ -25,7 +25,6 @@ int main(int argc, char **argv) {
      *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
      *  at row 21, column 30. 1 as the last parameter will make the cell at
      *  this position live while 0 will make the cell dead. 
-     *  Using any value other than 1 will 
      */
 
     cgol_state_set(s, 5, 5, 1); // Basic glider cell pattern
