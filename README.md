@@ -5,7 +5,7 @@ The code may not be particularly good but it has been a fun learning experience 
 Currently, the grid is preset with a small glider and is hard-coded. This can be modified in the source code until I add later features.
 
 ### Prerequisites:
-- This project has not been tested on all platforms. Presumes a UNIX-like/POSIX environment.
+- This project has not been tested on all platforms. Presumes a UNIX-like environment.
 - Requires GNU Make
 - Requires GCC
 

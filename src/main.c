@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
     
-    struct renderer r = renderer_create('O', 120); // Set to 120 generations per second. Feel free to modify.
+    struct renderer r = renderer_create('O', 20); // Set to 20 generations per second. Feel free to modify.
     struct cgol_state s = cgol_state_create_randomised(140, 80, 0.09); // Set last parameter (probability of liveness) to 0 for empty grid.
     
     /* Instructions for user modification of hard-coded grid:
