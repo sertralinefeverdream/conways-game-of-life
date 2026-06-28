@@ -19,7 +19,7 @@ $ ./conways-game-of-life
 ```
 - `CTRL+C` to exit.
 
-### Changing the hard-coded preset
+### Changing the hard-coded preset grid
 - Currently, the grid's initial cells are hardcoded until I am able to implement some sort of format to load in a pre-existing grid from a file. (Coming soon)
 - `cd` into `src` and open `main.c` in your favourite text editor (Neovim)
 - Follow the commented instructions
