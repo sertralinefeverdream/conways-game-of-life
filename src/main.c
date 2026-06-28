@@ -19,20 +19,21 @@ int main(int argc, char **argv) {
     signal(SIGINT, signal_handler);
     
     struct renderer r = renderer_create('O', 4); // Set to 12 generations per second. Feel free to modify.
-    struct cgol_state s = cgol_state_create_randomised(80, 80, 0.5);
+    struct cgol_state s = cgol_state_create_randomised(80, 80, 0.05); // Set last parameter (probability of liveness) to 0 for empty grid.
     
     /* Instructions for user modification of hard-coded grid:
      *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
      *  at row 21, column 30. 1 as the last parameter will make the cell at
      *  this position live while 0 will make the cell dead. 
-     */
 
+     
     cgol_state_set(s, 5, 5, 1); // Basic glider cell pattern
     cgol_state_set(s, 6, 6, 1);
     cgol_state_set(s, 6, 7, 1);
     cgol_state_set(s, 5, 7, 1);
     cgol_state_set(s, 4, 7, 1); 
-    
+     */
+
     while (running) {
        wait_and_render(&r, s);
        struct cgol_state next_s = cgol_state_generate_next(s);
