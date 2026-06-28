@@ -1,8 +1,6 @@
 #ifndef CGOL_H
 #define CGOL_H
 
-#include <stdlib.h>
-
 struct cgol_state {
     int width;  
     int height;
