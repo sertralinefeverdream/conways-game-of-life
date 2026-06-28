@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 struct cgol_state cgol_state_create(int width, int height) {
     if (width <= 0 || height <= 0) {
@@ -13,7 +14,31 @@ struct cgol_state cgol_state_create(int width, int height) {
     s.width = width;
     s.height = height;
     // s.grid = malloc(sizeof(int) * width * height); UNSAFE?
-    s.grid = calloc(sizeof(int), width * height); // Initialised to 0
+    s.grid = calloc(width * height, sizeof(int)); // Initialised to 0
+    return s;
+}
+
+struct cgol_state cgol_state_create_randomised(int width, int height, double p) {
+    struct cgol_state s = cgol_state_create(width, height);
+    
+    if (p < 0 || p > 1) {
+       return s;  // If the probability is invalid, return a cgol_state with empty grid.
+    }
+    
+    srand(time(NULL));
+    for (int i = 0; i < s.width; ++i) {
+        for (int j = 0; j < s.height; ++j) {
+            int r = rand();
+            
+            if (r <= (double)RAND_MAX * p) { // Not sure if the cast to double is necessary bcus maybe it will be promoted implicitly.
+               cgol_state_set(s, i, j, 1);
+               continue; 
+            }
+            
+            cgol_state_set(s, i, j, 0);
+        }
+    }
+    
     return s;
 }
 
