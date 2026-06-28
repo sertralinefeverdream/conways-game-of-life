@@ -7,6 +7,7 @@
 #include <limits.h>
 
 #define DELIMITER ','
+#define DEFAULT_CGOL_RETURN cgol_state_create(1, 1, NOT_INIT)
 
 /*
 FILE Format:
@@ -24,30 +25,100 @@ static enum read_state {
     READING_DATA,
 };
 
-struct cgol_state cgol_state_load_from_file(const char *const file_path) {
+struct cgol_state cgol_state_load_from_file(const char *const file_path, int *success) {
+    *success = 1;
+
     FILE *f = fopen(file_path, "r");
     if (!f) {
-        perror("Error trying to open file");
-        return cgol_state_create(80, 80, INIT);
+        fprintf(stderr, "Error while trying to open this file. Continuing with default");
+        *success = 0;
+        return DEFAULT_CGOL_RETURN;
     }
     
-    int width;
-    int height;
+    int grid_width;
+    int grid_height;
     struct cgol_state s;
     
-    enum read_state read_state = READING_WIDTH;
+    enum read_state state = READING_WIDTH;
     char buf[256];
 
-    while (fgets(f, sizeof(int)*256, buf) && read_state) {
-        switch (read_state) {
+    while (fgets(f, sizeof(int)*256, buf) && state) {
+        switch (state) {
             case READING_WIDTH:
+                errno = 0;
+                const char *const w = strtok(buf, ",");
+                if (!w) { // If no token found
+                    fprintf(stderr, "Incorrectly formatted grid width.");
+                    state = ERR;
+                    break;
+                }
+                
+                long w_long = strtol(w, NULL, 10);
+                int is_w_invalid = w_long <= 0 || w_long > INT_MAX;
+                if (errno == ERANGE || errno == EINVAL || is_w_invalid) {
+                    fprintf(stderr, "Error while trying to read grid width. Must be >0");
+                    state = ERR;
+                    break;
+                }
+                
+                grid_width = (int)w_long;
+                state = READING_HEIGHT;
+                break;
                 
             case READING_HEIGHT:
+                errno = 0;
+                const char *const h = strtok(buf, ",");
+                if (!w) {
+                    fprintf(stderr, "Incorrectly formatted grid height.");
+                    state = ERR;
+                    break;
+                }
+                
+                long h_long = strtol(h, NULL, 10);
+                int is_h_invalid = h_long <= 0 || h_long > INT_MAX;
+                if (errno == ERANGE || errno == EINVAL || is_h_invalid) {
+                    fprintf(stderr, "Error while trying to read grid height. Must be >0");
+                    state = ERR;
+                    break;
+                }
+                
+                grid_height = (int)h_long;
+                s = cgol_state_create(grid_width, grid_height, 1);
+                state = READING_DATA;
+                break;
 
             case READING_DATA:
+                errno = 0;
+                const char *const c = strtok(buf, ",");
+                const char *const r = strtok(NULL, ",");
+                if (!w || !r) {
+                    fprintf(stderr, "Incorrectly formatted cell data.");
+                    state = ERR;
+                    break;
+                }
+                
+                long c_long = strtol(c, NULL, 10);
+                long r_long = strtol(r, NULL, 10);
+                int is_c_invalid = c_long < 0 || c_long > grid_width - 1 || c_long > INT_MAX;
+                int is_r_invalid = r_long < 0  || r_long > grid_height - 1 || r_long > INT_MAX;
+                if (errno == ERANGE || errno == EINVAL || is_c_invalid || is_r_invalid) {
+                   fprintf(stderr, "Incorrectly formatted cell data.");
+                   state = ERR;
+                   break;
+                }
+                
+                cgol_state_set(s, (int)c_long, (int)r_long, 1);
+                break;
                 
         }
     }
     
+    if (state == ERR) {
+        cgol_state_free(s);
+        success = 0;
+        return DEFAULT_CGOL_RETURN; 
+    }
+    
+    return s;
 }
 

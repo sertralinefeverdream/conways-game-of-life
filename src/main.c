@@ -1,10 +1,19 @@
 #include "../include/cgol.h"
 #include "../include/render.h"
+#include "../include/cgol_file.h"
 
 #include <stdio.h>
 #include <time.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <string.h>
+#include <errno.h>
+#include <limits.h>
+
+#define DEFAULT_GPS 20
+#define DEFAULT_WIDTH 80 
+#define DEFAULT_HEIGHT 80
+#define DEFAULT_PROBABILITY 0.09
 
 static volatile sig_atomic_t running = 1;
 
@@ -13,27 +22,103 @@ static void signal_handler(int sig) {
 }
 
 int main(int argc, char **argv) {
+    if (argc == 1) {
+        fprintf(stderr, "No arguments supplied.");
+        exit(EXIT_SUCCESS);
+    }
+
     render_init();
     signal(SIGTERM, signal_handler);
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
     
-    struct renderer r = renderer_create('O', 20); // Set to 20 generations per second. Feel free to modify.
-    struct cgol_state s = cgol_state_create_randomised(140, 80, 0.09); // Set last parameter (probability of liveness) to 0 for empty grid.
+    unsigned generations_per_second = DEFAULT_GPS;
+    int grid_width = DEFAULT_WIDTH; 
+    int grid_height = DEFAULT_HEIGHT;
+    double p = DEFAULT_PROBABILITY;
     
-    /* Instructions for user modification of hard-coded grid:
-     *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
-     *  at row 21, column 30. 1 as the last parameter will make the cell at
-     *  this position live while 0 will make the cell dead. 
+    struct cgol_state s;
+    
+    int loading_from_file = 0;
+    for (size_t i = 1; i < argc; ++i) {
+        if (strcmp(argv[i], "-f")) {
+            const char *const file_path = argv[i+1];
+            if (file_path == NULL) {
+                fprintf(stderr, "No filepath supplied\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            int success;
+            s = cgol_state_load_from_file(file_path, &success);
+            if (!success) {
+                fprintf(stderr, "Unsuccessfully tried to load file.");
+                exit(EXIT_FAILURE);
+            }
 
-     
-    cgol_state_set(s, 5, 5, 1); // Basic glider cell pattern
-    cgol_state_set(s, 6, 6, 1);
-    cgol_state_set(s, 6, 7, 1);
-    cgol_state_set(s, 5, 7, 1);
-    cgol_state_set(s, 4, 7, 1); 
-     */
+            loading_from_file = 1;
+            break;
+        } else if (strcmp(argv[i], "-h")) {  
+            errno = 0; 
+            const char* const h = argv[i+1];
+            if (h == NULL) {
+                fprintf(stderr, "No grid height supplied\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            long h_long = strtol(h, NULL, 10);
+            int is_h_invalid = h_long <= 0 || h_long > INT_MAX;
+            if (errno == ERANGE || errno == EINVAL || is_h_invalid) {
+                fprintf(stderr, "Invalid height specified.\n");
+                exit(EXIT_FAILURE);
+            }
 
+            grid_height = (int)h_long;
+            ++i;
+        } else if (strcmp(argv[i], "-w")) {
+            errno = 0;
+            const char* const w = argv[i+1];
+            if (w == NULL) {
+                fprintf(stderr, "No grid width supplied\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            long w_long = strtol(w, NULL, 10);
+            int is_w_invalid = w_long <= 0 || w_long > INT_MAX;
+            if (errno == ERANGE || errno == EINVAL || is_w_invalid) {
+                fprintf(stderr, "Invalid width specified.\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            grid_width = (int)w_long;
+            ++i;
+        } else if (strcmp(argv[i], "-g")) {
+           errno = 0; 
+           const char *const g = argv[i+1];
+           if (g == NULL) {
+               fprintf(stderr, "No generation rate supplied\n");
+               exit(EXIT_FAILURE);
+           }
+           
+           long g_long = strtod(g_long, );
+           int is_g_invalid = g_long <= 0 || g_long > INT_MAX;
+           if (errno == ERANGE || is_g_invalid) { 
+               fprintf(stderr, "Invalid generation rate specified.\n");
+               exit(EXIT_FAILURE);
+           }
+           
+           generations_per_second = (unsigned)g_long;
+           ++i;
+        } else {
+            fprintf(stderr, "Invalid flag supplied");
+            exit(EXIT_FAILURE);
+        }
+    }
+    
+    if (!loading_from_file) {
+        s = cgol_state_create_randomised(grid_width, grid_height, p);
+    }
+
+    struct renderer r = renderer_create('O', generations_per_second);
     while (running) {
        wait_and_render(&r, s);
        struct cgol_state next_s = cgol_state_generate_next(s);
