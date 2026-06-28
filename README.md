@@ -22,8 +22,8 @@ $ ./conways-game-of-life
 
 ### Changing the hard-coded preset grid
 - Currently, the grid's initial cells are hardcoded until I am able to implement some sort of format to load in a pre-existing grid from a file. (Coming soon)
-- `cd` into `src` and open `main.c` in your favourite text editor (Neovim)
-- Follow the commented instructions
+- `cd` into `src` and open `main.c` in your favourite text editor.
+- Follow the commented instructions.
 - Rebuild by running `make` at the project root in your terminal application.
 
 ### Possible future improvements
