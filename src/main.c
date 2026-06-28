@@ -18,8 +18,8 @@ int main(int argc, char **argv) {
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
     
-    struct renderer r = renderer_create('O', 12); // Set to 12 generations per second. Feel free to modify.
-    struct cgol_state s = cgol_state_create_randomised(80, 80, 0.05); // Set last parameter (probability of liveness) to 0 for empty grid.
+    struct renderer r = renderer_create('O', 120); // Set to 120 generations per second. Feel free to modify.
+    struct cgol_state s = cgol_state_create_randomised(140, 80, 0.09); // Set last parameter (probability of liveness) to 0 for empty grid.
     
     /* Instructions for user modification of hard-coded grid:
      *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
