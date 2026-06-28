@@ -11,7 +11,8 @@ struct cgol_state cgol_state_create(int width, int height) {
     struct cgol_state s;
     s.width = width;
     s.height = height;
-    s.grid = malloc(sizeof(int) * width * height);
+    // s.grid = malloc(sizeof(int) * width * height); UNSAFE?
+    s.grid = calloc(sizeof(int), width * height); // Initialised to 0
     return s;
 }
 
@@ -23,6 +24,7 @@ int cgol_state_index(const struct cgol_state s, int col, int row) {
    if (col < 0 || col >= s.width || row < 0 || row >= s.height) {
        return 0;
    }
+   
    return s.grid[row * s.width + col];
 }
 
@@ -30,7 +32,7 @@ void cgol_state_set(struct cgol_state s, int col, int row, int value) {
     if (col < 0 || col >= s.width || row < 0 || row >= s.height) {
         return;
     }
-    s.grid[row * s.width + col] = value;
+    s.grid[row * s.width + col] = value == 0 ? 0 : 1; // Normalise all non-zero values to 1 
 }
 
 /* Any live cell with fewer than two live neighbours dies, as if by underpopulation.
@@ -55,7 +57,7 @@ static int count_live_neighbours(const struct cgol_state s, int col, int row) {
    return n;
 }
 
-struct cgol_state cgol_state_generate_next(struct cgol_state s) {
+struct cgol_state cgol_state_generate_next(const struct cgol_state s) {
     struct cgol_state next = cgol_state_create(s.width, s.height);
 
     for (int i = 0; i < s.width; ++i) {

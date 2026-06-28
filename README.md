@@ -17,6 +17,7 @@ $ make
 $ cd build
 $ ./conways-game-of-life
 ```
+- `CTRL+C` to exit.
 
 ### Changing the hard-coded preset
 - Currently, the grid's initial cells are hardcoded until I am able to implement some sort of format to load in a pre-existing grid from a file. (Coming soon)
@@ -28,6 +29,8 @@ $ ./conways-game-of-life
 - Loading and saving grid presets in a file format.
 - Command line arguments to specify generations per second.
 - Keyboard inputs to pause and resume the game.
+    - Possibly the ability to edit in-place while paused?
+- Make `struct renderer` and `struct cgol_state` opaque types? (Not sure if necessary)
  
 ## License
 - This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

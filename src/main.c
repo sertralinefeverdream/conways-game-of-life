@@ -16,31 +16,21 @@ int main(int argc, char **argv) {
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
     
-    struct renderer r = renderer_create('O', 12);
+    struct renderer r = renderer_create('O', 12); // Set to 12 generations per second. Feel free to modify.
     struct cgol_state s = cgol_state_create(80, 80);
+    
+    /* Instructions for modification of grid:
+     *  cgol_state_set(s, 21, 30, 1) will add a live cell to the state "s"
+     *  at row 21, column 30. 1 as the last parameter will make the cell at
+     *  this position live while 0 will make the cell dead. 
+     *  Using any value other than 1 will 
+     */
 
-    // Some basic prefixes
-    cgol_state_set(s, 5, 5, 1);
+    cgol_state_set(s, 5, 5, 1); // Basic glider cell pattern
     cgol_state_set(s, 6, 6, 1);
     cgol_state_set(s, 6, 7, 1);
     cgol_state_set(s, 5, 7, 1);
     cgol_state_set(s, 4, 7, 1); 
-    
-    cgol_state_set(s, 10, 5, 1);
-    cgol_state_set(s, 11, 6, 1);
-    cgol_state_set(s, 11, 7, 1);
-    cgol_state_set(s, 10, 7, 1);
-    cgol_state_set(s, 9, 7, 1);
-    
-    cgol_state_set(s, 11, 10, 1);
-    cgol_state_set(s, 11, 9, 1);
-    cgol_state_set(s, 12, 9, 1);
-    cgol_state_set(s, 11, 10, 1);
-    
-    cgol_state_set(s, 1, 5, 1);
-    cgol_state_set(s, 2, 6, 1);
-    cgol_state_set(s, 3, 7, 1);
-    
     
     while (running) {
        wait_and_render(&r, s);
