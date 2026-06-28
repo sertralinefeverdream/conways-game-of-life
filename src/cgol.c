@@ -1,4 +1,5 @@
 #include "../include/cgol.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 

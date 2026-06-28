@@ -1,9 +1,10 @@
 #ifndef RENDER_H
 #define RENDER_H
 
+#include "cgol.h"
+
 #include <stdio.h>
 #include <time.h>
-#include "cgol.h"
 
 struct renderer {
     char cell_char;

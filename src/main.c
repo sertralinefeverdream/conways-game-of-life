@@ -1,6 +1,7 @@
-#include <stdio.h>
 #include "../include/cgol.h"
 #include "../include/render.h"
+
+#include <stdio.h>
 #include <time.h>
 #include <signal.h>
 

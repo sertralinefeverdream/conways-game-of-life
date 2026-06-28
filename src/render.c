@@ -2,6 +2,7 @@
 
 #include "../include/render.h"
 #include "../include/cgol.h"
+
 #include <stdio.h>
 #include <time.h>
 
