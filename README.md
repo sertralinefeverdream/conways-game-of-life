@@ -3,7 +3,7 @@ A basic implementation of Conway's Game Of Life written in C.
 A small pet project that I am working on to get more comfortable with writing in C and using tools like GNU Make.
 The code may not be particularly good but it has been a fun learning experience so far with more features to come provided that I'm still motivated.
 
-![Video](https://github.com/user-attachments/assets/34246260-c343-4ff7-a542-5dc00f2813c5)
+![Video](/assets/imgs/random_grid.webp)
 
 ### Prerequisites:
 - This project has not been tested on all platforms. Presumes a UNIX-like environment.
@@ -64,6 +64,7 @@ $ ./conways-game-of-life -f <FILE PATH HERE> -g 20
 1,2
 0,2
 ```
+![Glider Video](/assets/imgs/glider.webp)
 
 ### Possible future improvements
 - [X] Loading and saving grid presets in a file format.
