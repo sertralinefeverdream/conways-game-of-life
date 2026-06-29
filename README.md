@@ -8,30 +8,66 @@ The code may not be particularly good but it has been a fun learning experience 
 - Requires GNU Make
 - Requires GCC
 
-### Instructions to Run:
+### Instructions to Build:
 - Open your terminal application.
 ```bash
 $ git clone https://github.com/sertralinefeverdream/conways-game-of-life.git
 $ cd conways-game-of-life
 $ make 
 $ cd build
-$ ./conways-game-of-life
+$ ./conways-game-of-life # Runs with the default flags
 ```
 - `CTRL+C` to exit.
 
-### Changing the hard-coded preset grid
-- Randomised start.
-- Currently, the grid's initial cells are hardcoded until I am able to implement some sort of format to load in a pre-existing grid from a file. (Coming soon)
-- `cd` into `src` and open `main.c` in your favourite text editor.
-- Follow the commented instructions.
-- Rebuild by running `make` at the project root in your terminal application.
+### Optional Command Line Flags
+- When executed without the `-f` flag, a randomly generated grid with default game parameters is assumed.
+- These default game parameters can be changed  
+```bash
+$ ./conways-game-of-life -g 10 -h 80 -w 100 -p 100
+```
+- `-g` : Generations per second. (Must be +ve non-zero positive integer) 
+- `-h` : Grid height. (Must be +ve non-zero positive integer)
+- `w` : Grid width. (Must be +ve non-zero positive integer)
+- `-p` : Probability of a cell being generated alive in a randomly-generated grid. (Decimal value between 0 and 1)
+
+## Loading From A File 
+- When executed with the `-f` flag and provided with a valid file path to a file, we can load a preset grid.
+```bash
+$ ./conways-game-of-life -f <FILE PATH HERE>
+```
+- When executed, the `-h`, `-w`, and `-p` flags are ignored. We can still adjust the generations per second with `-g`.
+```bash
+$ ./conways-game-of-life -f <FILE PATH HERE> -g 20
+```
+- The format of any valid input file may look like this:
+```
+80
+80
+1,1
+3,3
+21,5
+67,42
+```
+
+- Each line must be separated strictly with a new line character.
+- The first line denotes the grid width and the second line denotes the grid height.
+- Every subsequent line must be a comma-separated pair denoting the position of a single live cell in your preset grid and must fit within your defined grid dimensions. 
+- Shown below is a valid file format that creates a small glider:
+```
+80
+80
+1,0
+2,1
+2,2
+1,2
+0,2
+```
 
 ### Possible future improvements
-- Loading and saving grid presets in a file format.
-- Command line arguments to specify generations per second.
-- Keyboard inputs to pause and resume the game.
-    - Possibly the ability to edit in-place while paused?
-- Make `struct renderer` and `struct cgol_state` opaque types? (Not sure if necessary)
+- [X] Loading and saving grid presets in a file format.
+- [X] Command line arguments to specify generations per second.
+- [ ] Keyboard inputs to pause and resume the game.
+    - [ ] Possibly the ability to edit in-place while paused?
  
 ## License
 - This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
