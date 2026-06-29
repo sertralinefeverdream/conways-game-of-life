@@ -132,8 +132,8 @@ int main(int argc, char **argv) {
     struct renderer r = renderer_create('O', generations_per_second);
     for (;;) {
        wait_and_render(&r, s);
-       struct cgol_state next_s = cgol_state_generate_next(s);
-       cgol_state_free(s);
+       struct cgol_state *next_s = cgol_state_generate_next(s);
+       free(s);
        s = next_s;
     }
     
