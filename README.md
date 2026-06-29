@@ -27,9 +27,9 @@ $ ./conways-game-of-life # Runs with the default flags
 ```bash
 $ ./conways-game-of-life -g 10 -h 80 -w 100 -p 100
 ```
-- `-g` : Generations per second. (Must be +ve non-zero positive integer) 
-- `-h` : Grid height. (Must be +ve non-zero positive integer)
-- `w` : Grid width. (Must be +ve non-zero positive integer)
+- `-g` : Generations per second. (Must be non-zero positive integer) 
+- `-h` : Grid height. (Must be non-zero positive integer)
+- `w` : Grid width. (Must be non-zero positive integer)
 - `-p` : Probability of a cell being generated alive in a randomly-generated grid. (Decimal value between 0 and 1)
 
 ## Loading From A File 
