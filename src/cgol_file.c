@@ -47,6 +47,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
         switch (state) {
             case READING_WIDTH:
                 errno = 0;
+<<<<<<< Updated upstream
                 const char *const w = strtok(buf, ",");
                 if (!w) { // If no token found
                     fprintf(stderr, "Incorrectly formatted grid width.");
@@ -55,6 +56,9 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
                 }
                 
                 long w_long = strtol(w, NULL, 10);
+=======
+                long w_long = strtol(buf, NULL, 10);
+>>>>>>> Stashed changes
                 int is_w_invalid = w_long <= 0 || w_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_w_invalid) {
                     fprintf(stderr, "Error while trying to read grid width. Must be >0");
@@ -68,6 +72,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
                 
             case READING_HEIGHT:
                 errno = 0;
+<<<<<<< Updated upstream
                 const char *const h = strtok(buf, ",");
                 if (!w) {
                     fprintf(stderr, "Incorrectly formatted grid height.");
@@ -76,6 +81,9 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
                 }
                 
                 long h_long = strtol(h, NULL, 10);
+=======
+                long h_long = strtol(buf, NULL, 10);
+>>>>>>> Stashed changes
                 int is_h_invalid = h_long <= 0 || h_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_h_invalid) {
                     fprintf(stderr, "Error while trying to read grid height. Must be >0");
