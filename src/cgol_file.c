@@ -8,7 +8,7 @@
 #include <string.h>
 
 #define DELIMITER ','
-#define DEFAULT_CGOL_RETURN cgol_state_create(1, 1, NOT_INIT)
+#define INVALID_CGOL_RETURN ((struct cgol_state){0, 0, (void*)0}) 
 
 /*
 FILE Format:
@@ -33,7 +33,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
     if (!f) {
         fprintf(stderr, "Error while trying to open this file. Continuing with default");
         *success = 0;
-        return DEFAULT_CGOL_RETURN;
+        return INVALID_CGOL_RETURN;
     }
     
     int grid_width;
@@ -117,7 +117,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
     if (state == ERR) {
         cgol_state_free(s);
         success = 0;
-        return DEFAULT_CGOL_RETURN; 
+        return INVALID_CGOL_RETURN; 
     }
     
     return s;

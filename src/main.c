@@ -35,13 +35,12 @@ int main(int argc, char **argv) {
     unsigned generations_per_second = DEFAULT_GPS;
     int grid_width = DEFAULT_WIDTH; 
     int grid_height = DEFAULT_HEIGHT;
-    double p = DEFAULT_PROBABILITY;
+    double prob = DEFAULT_PROBABILITY;
     
     struct cgol_state s;
     
     int loading_from_file = 0;
     for (int i = 1; i < argc; ++i) {
-        fprintf(stderr, argv[i]);
         if (!strcmp(argv[i], "-f")) {
             const char *const file_path = argv[i+1];
             if (file_path == NULL) {
@@ -94,15 +93,32 @@ int main(int argc, char **argv) {
                exit(EXIT_FAILURE);
            }
            
-           long g_long = strtod(g, NULL);
+           long g_long = strtol(g, NULL, 10);
            int is_g_invalid = g_long <= 0 || g_long > INT_MAX;
-           if (errno == ERANGE || is_g_invalid) { 
+           if (errno == ERANGE || errno == EINVAL || is_g_invalid) { 
                fprintf(stderr, "Invalid generation rate specified.\n");
                exit(EXIT_FAILURE);
            }
            
            generations_per_second = (unsigned)g_long;
            ++i;
+        } else if (!strcmp(argv[i], "-p")) {
+            errno = 0;
+            const char* const p = argv[i+1];
+            if (p == NULL) {
+                fprintf(stderr, "No probability supplied\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            long p_double = strtod(p, NULL);
+            int is_p_invalid = p_double <= 0.0 || p_double >= 1;
+            if (errno == ERANGE || is_p_invalid) {
+                fprintf(stderr, "Invalid probability specified.\n");
+                exit(EXIT_FAILURE);
+            }
+            
+            prob = p_double;
+            ++i;
         } else {
             fprintf(stderr, "Invalid flag supplied\n");
             exit(EXIT_FAILURE);
@@ -110,7 +126,7 @@ int main(int argc, char **argv) {
     }
     
     if (!loading_from_file) {
-        s = cgol_state_create_randomised(grid_width, grid_height, p);
+        s = cgol_state_create_randomised(grid_width, grid_height, prob);
     }
 
     render_init();
