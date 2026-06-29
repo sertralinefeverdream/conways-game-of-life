@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
             loading_from_file = 1;
             s = cgol_state_load_from_file(file_path);
             if (s.grid == NULL) {
-                fprintf(stderr, "File is of invalid format.\n");
+                fprintf(stderr, "File is of invalid format or does not exist.\n");
                 exit(EXIT_FAILURE);
             }
             ++i;

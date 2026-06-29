@@ -31,7 +31,6 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
 
     FILE *f = fopen(file_path, "r");
     if (!f) {
-       fclose(f);
        return CGOL_STATE_NULL;
     }
    
