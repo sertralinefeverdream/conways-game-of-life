@@ -26,7 +26,7 @@ $ ./conways-game-of-life # Runs with the default flags
 - When executed without the `-f` flag, a randomly generated grid with default game parameters is assumed.
 - These default game parameters can be changed  
 ```bash
-$ ./conways-game-of-life -g 10 -h 80 -w 100 -p 100
+$ ./conways-game-of-life -g 10 -h 80 -w 100 -p 0.05
 ```
 - `-g` : Generations per second. (Must be non-zero positive integer) 
 - `-h` : Grid height. (Must be non-zero positive integer)
