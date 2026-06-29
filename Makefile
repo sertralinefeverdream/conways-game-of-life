@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c23 -Wall -Wextra 
+CFLAGS = -std=c23 -Wall -Wextra -o0 -g
 BUILDDIR = ./build
 EXEC_NAME = conways-game-of-life
 

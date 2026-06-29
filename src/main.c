@@ -35,15 +35,21 @@ int main(int argc, char **argv) {
     
     int loading_from_file = 0;
     for (int i = 1; i < argc; ++i) {
-        if (!strcmp(argv[i], "-f")) {
+        if (!strcmp(argv[i], "-f")) { // Flag for setting file
             const char *const file_path = argv[i+1];
             if (file_path == NULL) {
-                fprintf(stdout, "No filepath supplied\n");
+                fprintf(stderr, "No filepath supplied\n");
                 exit(EXIT_FAILURE);
             }
 
             loading_from_file = 1;
-            break;
+            int success;
+            s = cgol_state_load_from_file(file_path, &success);
+            if (!success) {
+                fprintf(stderr, "File is of invalid format.\n");
+                exit(EXIT_FAILURE);
+            }
+            ++i;
         } else if (!strcmp(argv[i], "-h")) {  
             errno = 0; 
             const char* const h = argv[i+1];
@@ -104,8 +110,8 @@ int main(int argc, char **argv) {
                 exit(EXIT_FAILURE);
             }
             
-            long p_double = strtod(p, NULL);
-            int is_p_invalid = p_double <= 0.0 || p_double >= 1;
+            double p_double = strtod(p, NULL);
+            int is_p_invalid = p_double < 0.0 || p_double > 1.0;
             if (errno == ERANGE || is_p_invalid) {
                 fprintf(stderr, "Invalid probability specified.\n");
                 exit(EXIT_FAILURE);
