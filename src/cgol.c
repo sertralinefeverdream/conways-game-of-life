@@ -6,8 +6,7 @@
 
 struct cgol_state cgol_state_create(int width, int height, int initialised) {
     if (width <= 0 || height <= 0) {
-       perror("cgol_state grid must have non-zero, non-negative dimensions");
-       exit(EXIT_FAILURE);
+        return CGOL_STATE_NULL; 
     }
 
     struct cgol_state s;
@@ -25,9 +24,9 @@ struct cgol_state cgol_state_create(int width, int height, int initialised) {
 
 struct cgol_state cgol_state_create_randomised(int width, int height, double p) {
     struct cgol_state s = cgol_state_create(width, height, INIT); 
-    
-    if (p < 0 || p > 1) {
-       return s;  // If the probability is invalid, return a cgol_state with empty grid.
+
+    if (s.grid == NULL) {
+        return s;
     }
 
     srand(time(NULL));

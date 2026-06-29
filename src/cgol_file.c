@@ -26,20 +26,15 @@ static enum read_state {
     READING_DATA,
 };
 
-struct cgol_state cgol_state_load_from_file(const char *const file_path, int *success) {
-    *success = 1;
-
+struct cgol_state cgol_state_load_from_file(const char *const file_path) {
     FILE *f = fopen(file_path, "r");
     if (!f) {
-        *success = 0;
-        printf("Couldn't be opened!");
-        return INVALID_CGOL_RETURN;
+        return CGOL_STATE_NULL;
     }
    
     char first_char = fgetc(f);
     if (first_char == EOF) {
-        *success = 0;
-        return INVALID_CGOL_RETURN;
+        return CGOL_STATE_NULL;
     }
     ungetc(first_char, f);
 
@@ -58,14 +53,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
         switch (state) {
             case READING_WIDTH:
                 errno = 0;
-                const char *const w = strtok(buf, ",");
-                if (!w) { // If no token found
-                    state = ERR;
-                    printf("width token not found");
-                    break;
-                }
-                
-                long w_long = strtol(w, NULL, 10);
+                long w_long = strtol(buf, NULL, 10);
                 int is_w_invalid = w_long <= 0 || w_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_w_invalid) {
                     state = ERR;
@@ -79,13 +67,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
                 
             case READING_HEIGHT:
                 errno = 0;
-                const char *const h = strtok(buf, ",");
-                if (!h) {
-                    state = ERR;
-                    break;
-                }
-                
-                long h_long = strtol(h, NULL, 10);
+                long h_long = strtol(buf, NULL, 10);
                 int is_h_invalid = h_long <= 0 || h_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_h_invalid) {
                     state = ERR;
@@ -125,8 +107,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
     fclose(f);
 
     if (state == ERR) {
-        success = 0;
-        return INVALID_CGOL_RETURN; 
+        return CGOL_STATE_NULL; 
     }
     
     return s;
