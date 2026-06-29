@@ -108,8 +108,9 @@ int main(int argc, char **argv) {
                 exit(EXIT_FAILURE);
             }
             
-            double p_double = strtod(p, NULL);
-            int is_p_invalid = p_double < 0.0 || p_double > 1.0;
+            char *err;
+            double p_double = strtod(p, &err);
+            int is_p_invalid = *err != '\0' || p_double < 0.0 || p_double > 1.0;
             if (errno == ERANGE || is_p_invalid) {
                 fprintf(stderr, "Invalid probability specified.\n");
                 exit(EXIT_FAILURE);
