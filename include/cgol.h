@@ -3,6 +3,7 @@
 
 #define INIT 1 
 #define NOT_INIT 0
+#define CGOL_STATE_NULL ((struct cgol_state){.width = 0, .height = 0, .grid = (void*)0,})
 
 struct cgol_state {
     int width;  

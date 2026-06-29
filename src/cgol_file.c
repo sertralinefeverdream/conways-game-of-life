@@ -8,7 +8,6 @@
 #include <string.h>
 
 #define DELIMITER ','
-#define INVALID_CGOL_RETURN ((struct cgol_state){0, 0, (void*)0}) 
 
 /*
 FILE Format:
@@ -20,20 +19,25 @@ FILE Format:
 */
 
 static enum read_state {
-    ERR,
+    DIMENSION_ERR,
+    DATA_ERR,
     READING_WIDTH,
     READING_HEIGHT,
     READING_DATA,
 };
 
 struct cgol_state cgol_state_load_from_file(const char *const file_path) {
+    enum read_state state = READING_WIDTH;
+
     FILE *f = fopen(file_path, "r");
     if (!f) {
-        return CGOL_STATE_NULL;
+       fclose(f);
+       return CGOL_STATE_NULL;
     }
    
-    char first_char = fgetc(f);
+    char first_char = fgetc(f); // Check if file is empty
     if (first_char == EOF) {
+        fclose(f);
         return CGOL_STATE_NULL;
     }
     ungetc(first_char, f);
@@ -42,10 +46,10 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
     int grid_height;
     struct cgol_state s; 
     
-    enum read_state state = READING_WIDTH;
     char buf[256];
 
-    while (fgets(buf, sizeof(char)*256, f) && state) {
+    int running = 1;
+    while (running && fgets(buf, sizeof(char)*256, f)) {
         if (buf[0] == '\n') {
             continue;
         }
@@ -56,8 +60,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
                 long w_long = strtol(buf, NULL, 10);
                 int is_w_invalid = w_long <= 0 || w_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_w_invalid) {
-                    state = ERR;
-                    printf("Invalid w");
+                    state = DIMENSION_ERR;
                     break;
                 }
                 
@@ -70,7 +73,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
                 long h_long = strtol(buf, NULL, 10);
                 int is_h_invalid = h_long <= 0 || h_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_h_invalid) {
-                    state = ERR;
+                    state = DIMENSION_ERR;
                     break;
                 }
                 
@@ -84,8 +87,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
                 const char *const c = strtok(buf, ",");
                 const char *const r = strtok(NULL, ",");
                 if (!c || !r) {
-                    state = ERR;
-                    cgol_state_free(s);
+                    state = DATA_ERR;
                     break;
                 }
                 
@@ -94,22 +96,27 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
                 int is_c_invalid = c_long < 0 || c_long > grid_width - 1 || c_long > INT_MAX;
                 int is_r_invalid = r_long < 0  || r_long > grid_height - 1 || r_long > INT_MAX;
                 if (errno == ERANGE || errno == EINVAL || is_c_invalid || is_r_invalid) {
-                   state = ERR;
-                   cgol_state_free(s);
+                   state = DATA_ERR;
                    break;
                 }
                 
                 cgol_state_set(s, (int)c_long, (int)r_long, 1);
+                break;
+
+            default:
+                running = 0;
                 break;
         }
     }
     
     fclose(f);
 
-    if (state == ERR) {
+    if (state != READING_DATA) { // If not in READING_DATA which is the only valid state to exit.
+        if (state == DATA_ERR) {
+            cgol_state_free(s); // Must be freed if there is an error during the data stage
+        }
         return CGOL_STATE_NULL; 
     }
     
     return s;
 }
-
