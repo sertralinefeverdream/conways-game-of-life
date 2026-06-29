@@ -5,6 +5,7 @@
 #include <errno.h>
 #include <stdlib.h>
 #include <limits.h>
+#include <string.h>
 
 #define DELIMITER ','
 #define DEFAULT_CGOL_RETURN cgol_state_create(1, 1, NOT_INIT)
@@ -42,7 +43,7 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path, int *su
     enum read_state state = READING_WIDTH;
     char buf[256];
 
-    while (fgets(f, sizeof(int)*256, buf) && state) {
+    while (fgets(buf, sizeof(char)*256, f) && state) {
         switch (state) {
             case READING_WIDTH:
                 errno = 0;

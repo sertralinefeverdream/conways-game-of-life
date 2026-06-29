@@ -23,11 +23,11 @@ static void signal_handler(int sig) {
 
 int main(int argc, char **argv) {
     if (argc == 1) {
-        fprintf(stderr, "No arguments supplied.");
+        fprintf(stderr, "No arguments supplied.\n");
         exit(EXIT_SUCCESS);
     }
 
-    render_init();
+    // render_init();
     signal(SIGTERM, signal_handler);
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
@@ -40,28 +40,23 @@ int main(int argc, char **argv) {
     struct cgol_state s;
     
     int loading_from_file = 0;
-    for (size_t i = 1; i < argc; ++i) {
-        if (strcmp(argv[i], "-f")) {
+    for (int i = 1; i < argc; ++i) {
+        fprintf(stderr, argv[i]);
+        if (!strcmp(argv[i], "-f")) {
             const char *const file_path = argv[i+1];
             if (file_path == NULL) {
-                fprintf(stderr, "No filepath supplied\n");
-                exit(EXIT_FAILURE);
-            }
-            
-            int success;
-            s = cgol_state_load_from_file(file_path, &success);
-            if (!success) {
-                fprintf(stderr, "Unsuccessfully tried to load file.");
+                fprintf(stdout, "No filepath supplied\n");
                 exit(EXIT_FAILURE);
             }
 
             loading_from_file = 1;
             break;
-        } else if (strcmp(argv[i], "-h")) {  
+        } else if (!strcmp(argv[i], "-h")) {  
             errno = 0; 
             const char* const h = argv[i+1];
             if (h == NULL) {
                 fprintf(stderr, "No grid height supplied\n");
+                fflush(stderr);
                 exit(EXIT_FAILURE);
             }
             
@@ -74,7 +69,7 @@ int main(int argc, char **argv) {
 
             grid_height = (int)h_long;
             ++i;
-        } else if (strcmp(argv[i], "-w")) {
+        } else if (!strcmp(argv[i], "-w")) {
             errno = 0;
             const char* const w = argv[i+1];
             if (w == NULL) {
@@ -91,7 +86,7 @@ int main(int argc, char **argv) {
             
             grid_width = (int)w_long;
             ++i;
-        } else if (strcmp(argv[i], "-g")) {
+        } else if (!strcmp(argv[i], "-g")) {
            errno = 0; 
            const char *const g = argv[i+1];
            if (g == NULL) {
@@ -99,7 +94,7 @@ int main(int argc, char **argv) {
                exit(EXIT_FAILURE);
            }
            
-           long g_long = strtod(g_long, );
+           long g_long = strtod(g, NULL);
            int is_g_invalid = g_long <= 0 || g_long > INT_MAX;
            if (errno == ERANGE || is_g_invalid) { 
                fprintf(stderr, "Invalid generation rate specified.\n");
@@ -109,7 +104,7 @@ int main(int argc, char **argv) {
            generations_per_second = (unsigned)g_long;
            ++i;
         } else {
-            fprintf(stderr, "Invalid flag supplied");
+            fprintf(stderr, "Invalid flag supplied\n");
             exit(EXIT_FAILURE);
         }
     }
@@ -118,6 +113,7 @@ int main(int argc, char **argv) {
         s = cgol_state_create_randomised(grid_width, grid_height, p);
     }
 
+    render_init();
     struct renderer r = renderer_create('O', generations_per_second);
     while (running) {
        wait_and_render(&r, s);
