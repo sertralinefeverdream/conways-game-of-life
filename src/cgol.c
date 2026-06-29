@@ -113,7 +113,7 @@ void cgol_state_set(struct cgol_state *const s, int col, int row, int value) {
     if (s == NULL || col < 0 || col >= s->width || row < 0 || row >= s->height) {
        return; 
     }
-    s->grid[row * s->width + col];
+    s->grid[row * s->width + col] = value;
 }
 
 /*
@@ -184,6 +184,8 @@ struct cgol_state *cgol_state_generate_next(const struct cgol_state *const s) {
            }
        }
    }
+   
+   return next;
 }
 
 

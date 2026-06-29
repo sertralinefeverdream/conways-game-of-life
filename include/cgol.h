@@ -8,7 +8,7 @@
 struct cgol_state {
     int width;  
     int height;
-    int *grid;
+    int grid[];
 };
 
 struct cgol_state *cgol_state_create(int width, int height, int initialised);
