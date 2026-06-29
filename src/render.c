@@ -15,7 +15,7 @@
 #define ALT_BUFFER_ENTER "\033[?1049h"
 #define ALT_BUFFER_EXIT "\033[?1049l"
 
-void render_cgol(struct renderer *const r, const struct cgol_state s) {
+void render_cgol(struct renderer *const r, const struct cgol_state *const s) {
     fputs(CURSOR_TO_HOME, stdout);
     for (int i = 0; i < s.height; ++i) {
         for (int j = 0; j < s.width; ++j) {
@@ -53,7 +53,7 @@ struct renderer renderer_create(char cell_char, unsigned framerate) {
    };
 }
 
-void wait_and_render(struct renderer *const r, const struct cgol_state s) {
+void wait_and_render(struct renderer *const r, const struct cgol_state *const s) {
     for (;;) {
         struct timespec now = {0};
         clock_gettime(CLOCK_MONOTONIC, &now);
