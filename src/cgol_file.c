@@ -31,13 +31,13 @@ struct cgol_state *cgol_state_load_from_file(const char *const file_path) {
 
     FILE *f = fopen(file_path, "r");
     if (!f) {
-       return (void*)0;
+       return NULL;
     }
    
     char first_char = fgetc(f); // Check if file is empty
     if (first_char == EOF) {
         fclose(f);
-        return (void*)0;
+        return NULL;
     }
     ungetc(first_char, f);
 
@@ -114,7 +114,7 @@ struct cgol_state *cgol_state_load_from_file(const char *const file_path) {
         if (state == DATA_ERR) {
             free(s); // Must be freed if there is an error during the data stage
         }
-        return (void*)0; 
+        return NULL; 
     }
     
     return s;

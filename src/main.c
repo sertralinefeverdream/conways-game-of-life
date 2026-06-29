@@ -31,7 +31,7 @@ int main(int argc, char **argv) {
     int grid_height = DEFAULT_HEIGHT;
     double prob = DEFAULT_PROBABILITY;
     
-    struct cgol_state s;
+    struct cgol_state *s;
     
     int loading_from_file = 0;
     for (int i = 1; i < argc; ++i) {
@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
 
             loading_from_file = 1;
             s = cgol_state_load_from_file(file_path);
-            if (s.grid == NULL) {
+            if (s == NULL) {
                 fprintf(stderr, "File is of invalid format or does not exist.\n");
                 exit(EXIT_FAILURE);
             }

@@ -17,8 +17,8 @@
 
 void render_cgol(struct renderer *const r, const struct cgol_state *const s) {
     fputs(CURSOR_TO_HOME, stdout);
-    for (int i = 0; i < s.height; ++i) {
-        for (int j = 0; j < s.width; ++j) {
+    for (int i = 0; i < s->height; ++i) {
+        for (int j = 0; j < s->width; ++j) {
             char c = cgol_state_index(s, j, i) ? r->cell_char : ' ';
             fputc(c, stdout);
         }

@@ -25,7 +25,7 @@ struct cgol_state cgol_state_create(int width, int height, int initialised) {
 
 struct cgol_state *cgol_state_create(int width, int  height, int initialised) { 
     if (width <= 0 || height <= 0) {
-        return (void*)0;
+        return NULL; 
     }
     
     struct cgol_state *s = malloc(sizeof(struct cgol_state) + width * height * sizeof(int));
@@ -33,7 +33,7 @@ struct cgol_state *cgol_state_create(int width, int  height, int initialised) {
     s->height = height;
     
     if (initialised) {
-        for (int i = 0; i < s.width * s.height; ++i) {
+        for (int i = 0; i < s->width * s->height; ++i) {
             s->grid[i] = 0;
         }
     }
@@ -68,12 +68,12 @@ struct cgol_state cgol_state_create_randomised(int width, int height, double p) 
 struct cgol_state *cgol_state_create_randomised(int width, int height, double p) {
     struct cgol_state *s = cgol_state_create(width, height, INIT);
 
-    if (s == (void*)0) {
+    if (s == NULL) {
        return s; 
     }
     
     srand(time(NULL));
-    for (int i = 0; i < s.width * s.height; ++i) {
+    for (int i = 0; i < s->width * s->height; ++i) {
         int r = rand();
         
         if (r <= (double)RAND_MAX * p) {
@@ -92,7 +92,7 @@ struct cgol_state *cgol_state_create_randomised(int width, int height, double p)
 }*/
 
 int cgol_state_index(const struct cgol_state *const s, int col, int row) {
-    if (s == (void*)0 || col < 0 || col >= s->width || row < 0 || row >= s->height) {
+    if (s == NULL || col < 0 || col >= s->width || row < 0 || row >= s->height) {
         return 0;
     }
     
@@ -110,10 +110,10 @@ int cgol_state_index(const struct cgol_state s, int col, int row) {
 */
 
 void cgol_state_set(struct cgol_state *const s, int col, int row, int value) { 
-    if (s == (void*)0 || col < 0 || col >= s->width || row < 0 || row >= s->height) {
+    if (s == NULL || col < 0 || col >= s->width || row < 0 || row >= s->height) {
        return; 
     }
-    s->grid[row * s->width + col]
+    s->grid[row * s->width + col];
 }
 
 /*
