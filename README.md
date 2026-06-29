@@ -67,8 +67,8 @@ $ ./conways-game-of-life -f <FILE PATH HERE> -g 20
 ![Glider Video](/assets/imgs/glider.webp)
 
 ### Possible future improvements
-- [X] Loading and saving grid presets in a file format.
-- [X] Command line arguments to specify generations per second.
+- [X] Loading grid presets from a file format.
+- [X] Command line arguments to specify generations per second and other properties.
 - [ ] Keyboard inputs to pause and resume the game.
     - [ ] Possibly the ability to edit in-place while paused?
  
