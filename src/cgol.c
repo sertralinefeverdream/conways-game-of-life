@@ -29,7 +29,8 @@ struct cgol_state cgol_state_create_randomised(int width, int height, double p) 
     if (p < 0 || p > 1) {
        return s;  // If the probability is invalid, return a cgol_state with empty grid.
     }
-    
+
+    srand(time(NULL));
     for (int i = 0; i < s.width * s.height; ++i) {
         int r = rand();
         

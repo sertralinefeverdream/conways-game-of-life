@@ -22,12 +22,6 @@ static void signal_handler(int sig) {
 }
 
 int main(int argc, char **argv) {
-    if (argc == 1) {
-        fprintf(stderr, "No arguments supplied.\n");
-        exit(EXIT_SUCCESS);
-    }
-
-    // render_init();
     signal(SIGTERM, signal_handler);
     signal(SIGABRT, signal_handler);
     signal(SIGINT, signal_handler);
