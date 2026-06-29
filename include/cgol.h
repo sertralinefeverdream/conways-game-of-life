@@ -11,11 +11,11 @@ struct cgol_state {
     int *grid;
 };
 
-struct cgol_state cgol_state_create(int width, int height, int initialised);
-struct cgol_state cgol_state_create_randomised(int width, int height, double p);
-void cgol_state_free(struct cgol_state s);   
-int cgol_state_index(const struct cgol_state s, int col, int row); 
-void cgol_state_set(struct cgol_state s, int col, int row, int value);
-struct cgol_state cgol_state_generate_next(const struct cgol_state s);
+struct cgol_state *cgol_state_create(int width, int height, int initialised);
+struct cgol_state *cgol_state_create_randomised(int width, int height, double p);
+//void cgol_state_free(struct cgol_state s);   
+int cgol_state_index(const struct cgol_state *const s, int col, int row); 
+void cgol_state_set(struct cgol_state *const s, int col, int row, int value);
+struct cgol_state *cgol_state_generate_next(const struct cgol_state *const s);
 
 #endif
