@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <time.h>
 
+/*
 struct cgol_state cgol_state_create(int width, int height, int initialised) {
     if (width <= 0 || height <= 0) {
         return CGOL_STATE_NULL; 
@@ -20,7 +21,26 @@ struct cgol_state cgol_state_create(int width, int height, int initialised) {
        }
     }
     return s;
+}*/
+
+struct cgol_state *cgol_state_create(int width, int  height, int initialised) { 
+    if (width <= 0 || height <= 0) {
+        return (void*)0;
+    }
+    
+    struct cgol_state *s = malloc(sizeof(struct cgol_state) + width * height * sizeof(int));
+    s->width = width;
+    s->height = height;
+    
+    if (initialised) {
+        for (int i = 0; i < s.width * s.height; ++i) {
+            s->grid[i] = 0;
+        }
+    }
+    
+    return s;
 }
+
 
 struct cgol_state cgol_state_create_randomised(int width, int height, double p) {
     struct cgol_state s = cgol_state_create(width, height, INIT); 
