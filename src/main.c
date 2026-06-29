@@ -54,7 +54,6 @@ int main(int argc, char **argv) {
             const char* const h = argv[i+1];
             if (h == NULL) {
                 fprintf(stderr, "No grid height supplied\n");
-                fflush(stderr);
                 exit(EXIT_FAILURE);
             }
             
