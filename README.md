@@ -3,7 +3,8 @@ A basic implementation of Conway's Game Of Life written in C.
 A small pet project that I am working on to get more comfortable with writing in C and using tools like GNU Make.
 The code may not be particularly good but it has been a fun learning experience so far with more features to come provided that I'm still motivated.
 
-![Video](/assets/imgs/random_grid.webp)
+![Random Grid Video](/assets/imgs/random_grid.webp)
+![3 Glider Synthesis of Mediumweight SpaceShip](/assets/imgs/3g_synthesis_mwss.webp)
 
 ### Prerequisites:
 - This project has not been tested on all platforms. Presumes a UNIX-like environment.
@@ -54,6 +55,7 @@ $ ./conways-game-of-life -f <FILE PATH HERE> -g 20
 - Each line must be separated strictly with a new line character.
 - The first line denotes the grid width and the second line denotes the grid height.
 - Every subsequent line must be a comma-separated pair denoting the position of a single live cell in your preset grid and must fit within your defined grid dimensions. 
+- Coordinates for placing cells are 0-indexed starting from the top-left corner of the screen.
 - Shown below is a valid file format that creates a small glider:
 ```
 80

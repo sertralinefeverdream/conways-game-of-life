@@ -17,8 +17,8 @@
 
 static volatile sig_atomic_t running = 1;
 
-static void signal_handler(int sig) {
-    running = 0;
+static void signal_handler(int) {
+    exit(EXIT_SUCCESS); // Not sure how else to trigger the atexit when we exit with CTRL+C
 }
 
 int main(int argc, char **argv) {
@@ -130,7 +130,7 @@ int main(int argc, char **argv) {
 
     render_init();
     struct renderer r = renderer_create('O', generations_per_second);
-    while (running) {
+    for (;;) {
        wait_and_render(&r, s);
        struct cgol_state next_s = cgol_state_generate_next(s);
        cgol_state_free(s);
