@@ -26,24 +26,24 @@ static enum read_state {
     READING_DATA,
 };
 
-struct cgol_state cgol_state_load_from_file(const char *const file_path) {
+struct cgol_state *cgol_state_load_from_file(const char *const file_path) {
     enum read_state state = READING_WIDTH;
 
     FILE *f = fopen(file_path, "r");
     if (!f) {
-       return CGOL_STATE_NULL;
+       return (void*)0;
     }
    
     char first_char = fgetc(f); // Check if file is empty
     if (first_char == EOF) {
         fclose(f);
-        return CGOL_STATE_NULL;
+        return (void*)0;
     }
     ungetc(first_char, f);
 
     int grid_width;
     int grid_height;
-    struct cgol_state s; 
+    struct cgol_state *s; 
     
     char buf[256];
 
@@ -112,9 +112,9 @@ struct cgol_state cgol_state_load_from_file(const char *const file_path) {
 
     if (state != READING_DATA) { // If not in READING_DATA which is the only valid state to exit.
         if (state == DATA_ERR) {
-            cgol_state_free(s); // Must be freed if there is an error during the data stage
+            free(s); // Must be freed if there is an error during the data stage
         }
-        return CGOL_STATE_NULL; 
+        return (void*)0; 
     }
     
     return s;
